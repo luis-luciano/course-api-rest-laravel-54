@@ -1,0 +1,6 @@
+Notas
+- En un sistema para solicitud de respuestas json debemos solicitarlo a traves de encabezados (headers)
+  definimos la llave:
+        Accept >>>> application/json
+  Tal llave en laravel indica que se requerimos respuestas Json, la llave es consultada del lado del backend 
+  a traves del metodo $request->wantsJson()
