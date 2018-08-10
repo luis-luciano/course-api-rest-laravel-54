@@ -2,10 +2,12 @@
 
 namespace App\Policies;
 
+use App\Category;
 use App\Product;
-use App\seller;
+use App\Seller;
 use App\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
+use Illuminate\Database\Eloquent\Model;
 
 class ProductPolicy
 {
@@ -45,8 +47,32 @@ class ProductPolicy
         return $this->belongsTo($product, $seller);
     }
 
-    private function belongsTo(Product $product, Seller $seller)
+    public function categoryDetach(User $user, Product $product, Category $category)
     {
-        return $seller->id === $product->seller_id;
+        return $this->belongsTo($product, $category);
+    }
+
+    private function belongsTo(Product $product, Model $model)
+    {
+        // Product has a Category
+        if ($this->isOfType($model, Category::class)) {
+            return $this->belongsToCategory($product, $model);
+        }
+
+        // Product belongs to Seller
+        return $this->isOfType($model, Seller::class) && $model->id === $product->seller_id;
+    }
+
+    private function belongsToCategory(Product $product, Category $category)
+    {
+        if (!$product->categories()->find($category->id)) {
+            return false;
+        }
+
+        return true;
+    }
+    private function isOfType(Model $model, $destinyClass)
+    {
+        return $model instanceof $destinyClass;
     }
 }

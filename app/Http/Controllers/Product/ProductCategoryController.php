@@ -27,4 +27,13 @@ class ProductCategoryController extends ApiController
 
         return $this->seeAll($product->categories);
     }
+
+    public function destroy(Product $product, Category $category)
+    {
+        $this->authorize("categoryDetach", [$product, $category]);
+
+        $product->categories()->detach([$category->id]);
+
+        return $this->seeAll($product->categories);
+    }
 }
