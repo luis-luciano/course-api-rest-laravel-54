@@ -39,6 +39,20 @@ class Product extends Model
      */
     protected $dates = ['deleted_at'];
 
+    /**
+     * The "booting" method of the model.
+     *
+     * @return void
+     */
+    public static function boot()
+    {
+        parent::boot();
+
+        static::updated(function ($product) {
+            $product->updateAvailability();
+        });
+    }
+
     public function categories()
     {
         return $this->belongsToMany(Category::class);
@@ -57,5 +71,13 @@ class Product extends Model
     public function getHasCategoriesAttribute()
     {
         return $this->categories()->count();
+    }
+
+    public function updateAvailability()
+    {
+        if ($this->quantity == 0 && $this->available) {
+            $this->available = false;
+            $this->save();
+        }
     }
 }

@@ -1,4 +1,6 @@
 Notas
+lwrap para detalle en consola
+
 - En un sistema para solicitud de respuestas json debemos solicitarlo a traves de encabezados (headers)
   definimos la llave:
         Accept >>>> application/json
