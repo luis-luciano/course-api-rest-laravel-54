@@ -7,11 +7,17 @@ use App\Http\Requests\Product\ProductStoreRequest;
 use App\Http\Requests\Product\ProductUpdateRequest;
 use App\Product;
 use App\Seller;
+use App\Services\Product as ProductService;
 use App\User;
 use Symfony\Component\HttpFoundation\Response;
 
 class SellerProductController extends ApiController
 {
+    public function __construct(ProductService $productService)
+    {
+        $this->productService = $productService;
+    }
+
     public function index(Seller $seller)
     {
         $products = $seller->products;
@@ -24,7 +30,7 @@ class SellerProductController extends ApiController
         $product = new Product($request->all());
 
         // By default generate name random
-        $product->image = $request->file('image')->store('', 'images');
+        $product->image = $this->productService->storeImage($request->file('image'));
         $product->seller_id = $seller->id;
 
         $product->save();
@@ -36,7 +42,10 @@ class SellerProductController extends ApiController
     {
         $this->authorize('update', [$product, $seller]);
 
-        $product->fill($request->all());
+        $product->image = $this->productService->storeImage($request->file('image'), $product->image);
+
+        // Except image to avoid collisions
+        $product->fill($request->except('image'));
 
         if ($product->isClean()) {
             return $this->successResponse();
@@ -52,6 +61,8 @@ class SellerProductController extends ApiController
         $this->authorize('destroy', [$product, $seller]);
 
         $product->delete();
+
+        $this->productService->deleteImage($product->image);
 
         return $this->showOne($product);
     }

@@ -6,3 +6,7 @@ lwrap para detalle en consola
         Accept >>>> application/json
   Tal llave en laravel indica que se requerimos respuestas Json, la llave es consultada del lado del backend 
   a traves del metodo $request->wantsJson()
+
+- Para una actualizacion PUT O PATCH utilizar parametros de peticion  "x-www-form-urlencoded" en el cual no se
+puede definir el tipo de dato, en dado caso se necesite realizar definicion de tipo de dato, enviar una peticion
+tipo POST con el input _method => PUT
