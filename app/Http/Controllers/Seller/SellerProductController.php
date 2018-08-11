@@ -23,7 +23,8 @@ class SellerProductController extends ApiController
     {
         $product = new Product($request->all());
 
-        $product->image = 'Default.jpg';
+        // By default generate name random
+        $product->image = $request->file('image')->store('', 'images');
         $product->seller_id = $seller->id;
 
         $product->save();
