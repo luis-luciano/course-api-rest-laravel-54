@@ -7,7 +7,7 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 
-class UserCreated extends Mailable
+class UserMailChanged extends Mailable
 {
     use Queueable, SerializesModels;
 
@@ -30,6 +30,6 @@ class UserCreated extends Mailable
      */
     public function build()
     {
-        return $this->text('emails.welcome')->subject('Por favor confirma tu correo electronico');
+        return $this->text('emails.confirm')->subject('Por favor confirma tu nuevo correo');
     }
 }

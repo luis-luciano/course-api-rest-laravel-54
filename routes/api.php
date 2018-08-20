@@ -66,6 +66,7 @@ Route::resource('users', 'User\UserController', [
 ]);
 // Users Verify
 Route::name('verify')->get('users/verify/{token}', 'User\UserController@verify');
+Route::name('resend')->get('users/{user}/resend', 'User\UserController@resend');
 
 // Sellers
 Route::resource('sellers', 'Seller\SellerController', [

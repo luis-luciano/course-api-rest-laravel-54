@@ -91,4 +91,13 @@ class UserController extends ApiController
 
         return $this->successResponse(['message' => 'Verificado con exito']);
     }
+
+    public function resend(User $user)
+    {
+        $this->authorize('verify', $user);
+
+        Mail::to($user->email)->send(new UserCreated($user));
+
+        return $this->successResponse(['message' => 'El correo de verificacion se envió con exito.']);
+    }
 }

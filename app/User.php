@@ -2,9 +2,12 @@
 
 namespace App;
 
+use App\Mail\UserCreated;
+use App\Mail\UserMailChanged;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Mail;
 
 class User extends Authenticatable
 {
@@ -53,12 +56,41 @@ class User extends Authenticatable
     ];
 
     /**
+     * The "booting" method of the model.
+     *
+     * @return void
+     */
+    public static function boot()
+    {
+        parent::boot();
+
+        static::created(function ($user) {
+            Mail::to($user->email)->send(new UserCreated($user));
+        });
+
+        static::updating(function ($user) {
+            if ($user->isDirty('email')) {
+                $user->verified = false;
+                $user->generateVerificationToken();
+            }
+        });
+
+        static::updated(function ($user) {
+            if ($user->isDirty('email')) {
+                Mail::to($user->email)->send(new UserMailChanged($user));
+            }
+        });
+    }
+
+    /**
      * Generate random token
      * @return string
      */
-    public static function generateVerificationToken()
+    public function generateVerificationToken()
     {
-        return str_random(40);
+        $this->verification_token = str_random(40);
+
+        return $this;
     }
 
     /**
@@ -69,7 +101,7 @@ class User extends Authenticatable
     public static function createDefault(array $data)
     {
         $user = new static($data);
-        $user->verification_token = static::generateVerificationToken();
+        $user->generateVerificationToken();
 
         // for default set as non-administrator and not verified
         $user->is_admin = $user->verified = false;
