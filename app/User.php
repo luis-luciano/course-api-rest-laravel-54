@@ -2,12 +2,9 @@
 
 namespace App;
 
-use App\Mail\UserCreated;
-use App\Mail\UserMailChanged;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use Illuminate\Support\Facades\Mail;
 
 class User extends Authenticatable
 {
@@ -56,39 +53,15 @@ class User extends Authenticatable
     ];
 
     /**
-     * The "booting" method of the model.
-     *
-     * @return void
-     */
-    public static function boot()
-    {
-        parent::boot();
-
-        static::created(function ($user) {
-            Mail::to($user->email)->send(new UserCreated($user));
-        });
-
-        static::updating(function ($user) {
-            if ($user->isDirty('email')) {
-                $user->verified = false;
-                $user->generateVerificationToken();
-            }
-        });
-
-        static::updated(function ($user) {
-            if ($user->isDirty('email')) {
-                Mail::to($user->email)->send(new UserMailChanged($user));
-            }
-        });
-    }
-
-    /**
      * Generate random token
      * @return string
      */
     public function generateVerificationToken()
     {
-        $this->verification_token = str_random(40);
+        if (empty($this->verification_token)) {
+            $this->verified = false;
+            $this->verification_token = str_random(40);
+        }
 
         return $this;
     }
@@ -104,7 +77,7 @@ class User extends Authenticatable
         $user->generateVerificationToken();
 
         // for default set as non-administrator and not verified
-        $user->is_admin = $user->verified = false;
+        $user->is_admin = false;
 
         return $user->save() ? $user : null;
     }
@@ -130,6 +103,11 @@ class User extends Authenticatable
     public function getNameAttribute($value)
     {
         return ucwords($value);
+    }
+
+    public function getEmailChangedAttribute()
+    {
+        return $this->isDirty('email');
     }
 
     // End Accessors  ----------------------------------------------------------------------

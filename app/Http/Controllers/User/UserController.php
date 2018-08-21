@@ -5,12 +5,20 @@ namespace App\Http\Controllers\User;
 use App\Http\Controllers\ApiController;
 use App\Http\Requests\User\UserStoreRequest;
 use App\Http\Requests\User\UserUpdateRequest;
+use App\Mail\UserCreated;
+use App\Services\User as UserService;
 use App\User;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 class UserController extends ApiController
 {
+
+    public function __construct(UserService $userService)
+    {
+        $this->userService = $userService;
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -96,7 +104,13 @@ class UserController extends ApiController
     {
         $this->authorize('verify', $user);
 
-        Mail::to($user->email)->send(new UserCreated($user));
+        $user->generateVerificationToken();
+
+        if (!$user->verified) {
+            $user->save();
+        }
+
+        $this->userService->sendEmail($user, UserCreated::class);
 
         return $this->successResponse(['message' => 'El correo de verificacion se envió con exito.']);
     }
