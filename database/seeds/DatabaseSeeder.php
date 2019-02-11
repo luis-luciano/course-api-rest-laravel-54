@@ -25,10 +25,10 @@ class DatabaseSeeder extends Seeder
         DB::table('category_product')->truncate();
 
         // Desactiva el disparo de los eventos envitando sobrecarga en la generacion de datos
-        User::flushEventListener();
-        Category::flushEventListener();
-        Product::flushEventListener();
-        Transaction::flushEventListener();
+        User::flushEventListeners();
+        Category::flushEventListeners();
+        Product::flushEventListeners();
+        Transaction::flushEventListeners();
 
         factory(User::class, 200)->create();
         factory(Category::class, 30)->create();

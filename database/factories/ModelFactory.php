@@ -26,7 +26,7 @@ $factory->define(User::class, function (Faker\Generator $faker) {
         'password' => $password ?: $password = bcrypt('secret'),
         'remember_token' => str_random(10),
         'verified' => $verified = $faker->boolean,
-        'verification_token' => $verified ? User::generateVerificationToken() : null,
+        'verification_token' => $verified ? str_random(40) : null,
         'is_admin' => $faker->boolean,
     ];
 });
