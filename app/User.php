@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Transformers\UserTransformer;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -51,6 +52,8 @@ class User extends Authenticatable
         'is_admin' => 'boolean',
         'verified' => 'boolean',
     ];
+
+    public $transformer = UserTransformer::class;
 
     /**
      * Generate random token

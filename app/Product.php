@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Transformers\ProductTransformer;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -38,6 +39,8 @@ class Product extends Model
      * @var array
      */
     protected $dates = ['deleted_at'];
+
+    public $transformer = ProductTransformer::class;
 
     /**
      * The "booting" method of the model.
