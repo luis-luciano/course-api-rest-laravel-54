@@ -24,7 +24,7 @@ class DatabaseSeeder extends Seeder
         Transaction::truncate();
         DB::table('category_product')->truncate();
 
-        // Desactiva el disparo de los eventos envitando sobrecarga en la generacion de datos
+        // Desactiva el disparo de los eventos evitando sobrecarga en la generacion de datos
         User::flushEventListeners();
         Category::flushEventListeners();
         Product::flushEventListeners();
