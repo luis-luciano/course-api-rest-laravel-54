@@ -39,8 +39,8 @@ class Kernel extends HttpKernel
 
         'api' => [
             'signature:X-Application-Name',
-            \App\Http\Middleware\TooManyRequestMiddleware::class,
-            'throttle:3,1',
+            'customThrottle:3,1',
+            //'throttle:3,1',
             'bindings',
         ],
     ];
@@ -58,7 +58,8 @@ class Kernel extends HttpKernel
         'bindings' => \Illuminate\Routing\Middleware\SubstituteBindings::class,
         'can' => \Illuminate\Auth\Middleware\Authorize::class,
         'guest' => \App\Http\Middleware\RedirectIfAuthenticated::class,
-        'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
+        //'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
+        'customThrottle' => \App\Http\Middleware\CustomThrottleRequestMiddleware::class,
         'signature' => \App\Http\Middleware\SignatureMiddleware::class,
     ];
 }
