@@ -16,12 +16,12 @@ class BuyerTransformer extends TransformerAbstract
     {
         return [
             'identifier' => (int) $buyer->id,
-            'name' => (string) $buyer->name,
-            'email' => (string) $buyer->email,
-            'isVerified' => (boolean) $buyer->verified,
-            'dateCreated' => (string) $buyer->created_at,
-            'dateUpdated' => (string) $buyer->updated_at,
-            'dateDeleted' => ((string) $buyer->deleted_at) ?? null,
+            'nombre' => (string) $buyer->name,
+            'correo' => (string) $buyer->email,
+            'es_verificado' => (boolean) $buyer->verified,
+            'fecha_creacion' => (string) $buyer->created_at,
+            'fecha_actualizacion' => ((string) $buyer->updated_at) ?? null,
+            'fecha_eliminacion' => ((string) $buyer->deleted_at) ?? null,
         ];
     }
 }

@@ -16,11 +16,11 @@ class CategoryTransformer extends TransformerAbstract
     {
         return [
             'identifier' => (int) $category->id,
-            'title' => (string) $category->name,
-            'details' => (string) $category->description,
-            'dateCreated' => (string) $category->created_at,
-            'dateUpdated' => (string) $category->updated_at,
-            'dateDeleted' => ((string) $category->deleted_at) ?? null,
+            'titulo' => (string) $category->name,
+            'descripcion' => (string) $category->description,
+            'fecha_creacion' => (string) $category->created_at,
+            'fecha_actualizacion' => (string) $category->updated_at,
+            'fecha_eliminacion' => ((string) $category->deleted_at) ?? null,
         ];
     }
 }

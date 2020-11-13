@@ -16,15 +16,15 @@ class ProductTransformer extends TransformerAbstract
     {
         return [
             'identifier' => (int) $product->id,
-            'title' => (string) $product->name,
-            'details' => (string) $product->description,
-            'amountAvailables' => $product->quantity,
+            'titulo' => (string) $product->name,
+            'descripcion' => (string) $product->description,
+            'cantidad_disponible' => $product->quantity,
             'status' => (string) $product->status,
-            'image' => url("img/{$product->image}"),
-            'seller' => (int) $product->seller_id,
-            'dateCreated' => (string) $product->created_at,
-            'dateUpdated' => (string) $product->updated_at,
-            'dateDeleted' => ((string) $product->deleted_at) ?? null,
+            'imagen' => url("img/{$product->image}"),
+            'vendedor' => (int) $product->seller_id,
+            'fecha_creacion' => (string) $product->created_at,
+            'fecha_actualizacion' => ((string) $product->updated_at) ?? null,
+            'fecha_eliminacion' => ((string) $product->deleted_at) ?? null,
         ];
     }
 }

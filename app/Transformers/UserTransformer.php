@@ -16,13 +16,13 @@ class UserTransformer extends TransformerAbstract
     {
         return [
             'identifier' => (int) $user->id,
-            'name' => (string) $user->name,
-            'email' => (string) $user->email,
-            'isVerified' => (boolean) $user->verified,
-            'isAdministrator' => (boolean) $user->is_admin,
-            'dateCreated' => (string) $user->created_at,
-            'dateUpdated' => (string) $user->updated_at,
-            'dateDeleted' => ((string) $user->deleted_at) ?? null,
+            'nombre' => (string) $user->name,
+            'correo' => (string) $user->email,
+            'es_verificado' => (boolean) $user->verified,
+            'es_administrador' => (boolean) $user->is_admin,
+            'fecha_creacion' => (string) $user->created_at,
+            'fecha_actualizacion' => ((string) $user->updated_at) ?? null,
+            'fecha_eliminacion' => ((string) $user->deleted_at) ?? null,
         ];
     }
 }

@@ -16,12 +16,12 @@ class SellerTransformer extends TransformerAbstract
     {
         return [
             'identifier' => (int) $seller->id,
-            'name' => (string) $seller->name,
-            'email' => (string) $seller->email,
-            'isVerified' => (boolean) $seller->verified,
-            'dateCreated' => (string) $seller->created_at,
-            'dateUpdated' => (string) $seller->updated_at,
-            'dateDeleted' => ((string) $seller->deleted_at) ?? null,
+            'nombre' => (string) $seller->name,
+            'correo' => (string) $seller->email,
+            'es_verificado' => (boolean) $seller->verified,
+            'fecha_creacion' => (string) $seller->created_at,
+            'fecha_actualizacion' => (string) $seller->updated_at,
+            'fecha_eliminacion' => ((string) $seller->deleted_at) ?? null,
         ];
     }
 }
